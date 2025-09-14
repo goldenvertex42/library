@@ -1,4 +1,5 @@
-const myLibrary = [];
+let myLibrary = [];
+const bookshelfDiv = document.body.querySelector('.bookshelf');
 
 function Book(title, author, pages, read) {
     if (!new.target) {
@@ -19,36 +20,37 @@ function addBookToLibrary(title, author, pages, read) {
 }
 
 function displayBooks() {
-    const bookshelfDiv = document.body.querySelector('.bookshelf');
     bookshelfDiv.innerHTML = '';
     
     Object.values(myLibrary).forEach(newBook => { 
-    const newCard = document.createElement('div');
-    const bookTitle = document.createElement('h3');
-    const bookAuthor = document.createElement('p');
-    const bookPages = document.createElement('p');
-    const bookRead = document.createElement('p');
-    const readButton = document.createElement('button');
-    const deleteButton = document.createElement('button');
-    newCard.className = 'book-card';
-    bookTitle.className = 'book-title';
-    bookAuthor.className = 'book-author';
-    bookPages.className = 'book-pages';
-    readButton.classList.add('button', 'read-button');
-    deleteButton.classList.add('button', 'delete-button');
-    readButton.textContent = 'Change Read Status'
-    deleteButton.textContent = 'X';
-    bookTitle.textContent = `${newBook.title}`;
-    bookAuthor.textContent = `${newBook.author}`;
-    bookPages.textContent = `${newBook.pages} pages`;
-    bookRead.textContent = `Have you read this book? ${newBook.read}`;
-    newCard.appendChild(deleteButton);
-    newCard.appendChild(bookTitle);
-    newCard.appendChild(bookAuthor);
-    newCard.appendChild(bookPages);
-    newCard.appendChild(bookRead);
-    newCard.appendChild(readButton);
-    bookshelfDiv.appendChild(newCard);
+        const newCard = document.createElement('div');
+        const bookTitle = document.createElement('h3');
+        const bookAuthor = document.createElement('p');
+        const bookPages = document.createElement('p');
+        const bookRead = document.createElement('p');
+        const readButton = document.createElement('button');
+        const deleteButton = document.createElement('button');
+        const readStatusText = newBook.read ? "Yes" : "No";
+        newCard.dataset.bookId = newBook.id;
+        newCard.className = 'book-card';
+        bookTitle.className = 'book-title';
+        bookAuthor.className = 'book-author';
+        bookPages.className = 'book-pages';
+        readButton.classList.add('button', 'read-button');
+        deleteButton.classList.add('button', 'delete-button');
+        readButton.textContent = 'Change Read Status'
+        deleteButton.textContent = 'X';
+        bookTitle.textContent = `${newBook.title}`;
+        bookAuthor.textContent = `${newBook.author}`;
+        bookPages.textContent = `${newBook.pages} pages`;
+        bookRead.textContent = `Have you read this book? ${readStatusText}`;
+        newCard.appendChild(deleteButton);
+        newCard.appendChild(bookTitle);
+        newCard.appendChild(bookAuthor);
+        newCard.appendChild(bookPages);
+        newCard.appendChild(bookRead);
+        newCard.appendChild(readButton);
+        bookshelfDiv.appendChild(newCard);
 });
 }
 
@@ -104,4 +106,39 @@ document.addEventListener('DOMContentLoaded', () => {
         // Close the dialog after submission
         newBookDialog.close();
     });
+});
+
+function removeBook(bookId) {
+  // 1. Remove the book from the myLibrary array
+  myLibrary = myLibrary.filter(book => book.id !== bookId);
+
+  // 2. Remove the book card from the DOM
+  const bookCard = document.querySelector(`[data-book-id="${bookId}"]`);
+  if (bookCard) {
+    bookCard.remove();
+  }
+}
+
+function toggleReadStatus(bookId) {
+    const bookToToggle = myLibrary.find(book => book.id === bookId);
+    if (bookToToggle) {
+        bookToToggle.read = !bookToToggle.read;
+    }
+    displayBooks();
+}
+
+bookshelfDiv.addEventListener('click', (event) => {
+  // Check if the clicked element has the 'remove-book-btn' class
+  if (event.target.classList.contains('delete-button')) {
+    // Traverse up to find the parent book card
+    const bookCard = event.target.closest('.book-card');
+    const bookId = bookCard.dataset.bookId;
+    removeBook(bookId);
+  }
+
+  if (event.target.classList.contains('read-button')) {
+    const bookCard = event.target.closest('.book-card');
+    const bookId = bookCard.dataset.bookId;
+    toggleReadStatus(bookId);
+  }
 });
