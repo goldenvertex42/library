@@ -1,6 +1,14 @@
 let myLibrary = [];
 const bookshelfDiv = document.body.querySelector('.bookshelf');
 
+function generateRandomPastelColor() {
+  const hue = Math.floor(Math.random() * 361); // Random hue (0-360)
+  const saturation = Math.floor(Math.random() * 30) + 70; // Moderate saturation (70-99%)
+  const lightness = Math.floor(Math.random() * 15) + 80; // High lightness (80-94%)
+
+  return `hsl(${hue}deg, ${saturation}%, ${lightness}%)`;
+}
+
 function Book(title, author, pages, read) {
     if (!new.target) {
         throw Error("You must use the 'new' operator to call the constructor");
@@ -39,7 +47,7 @@ function displayBooks() {
         readButton.classList.add('button', 'read-button');
         deleteButton.classList.add('button', 'delete-button');
         readButton.textContent = 'Change Read Status'
-        deleteButton.textContent = 'X';
+        deleteButton.textContent = 'Delete';
         bookTitle.textContent = `${newBook.title}`;
         bookAuthor.textContent = `${newBook.author}`;
         bookPages.textContent = `${newBook.pages} pages`;
@@ -50,6 +58,7 @@ function displayBooks() {
         newCard.appendChild(bookPages);
         newCard.appendChild(bookRead);
         newCard.appendChild(readButton);
+        newCard.style.backgroundColor = generateRandomPastelColor();
         bookshelfDiv.appendChild(newCard);
 });
 }
@@ -109,14 +118,21 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function removeBook(bookId) {
-  // 1. Remove the book from the myLibrary array
-  myLibrary = myLibrary.filter(book => book.id !== bookId);
+  // 1. Confirm the user wants to delete the book
+    if (window.confirm('Are you sure you want to delete this book?')) {
+  
+        // 2. Remove the book from the myLibrary array
+    myLibrary = myLibrary.filter(book => book.id !== bookId);
 
-  // 2. Remove the book card from the DOM
-  const bookCard = document.querySelector(`[data-book-id="${bookId}"]`);
-  if (bookCard) {
-    bookCard.remove();
-  }
+  // 3. Remove the book card from the DOM
+    const bookCard = document.querySelector(`[data-book-id="${bookId}"]`);
+    if (bookCard) {
+        bookCard.remove();
+    }
+  // 4. If the user cancels the book deletion, it's reported in the console  
+    } else {
+    console.log("Book deletion cancelled")
+    }
 }
 
 function toggleReadStatus(bookId) {
