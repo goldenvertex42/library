@@ -28,18 +28,26 @@ function displayBooks() {
     const bookAuthor = document.createElement('p');
     const bookPages = document.createElement('p');
     const bookRead = document.createElement('p');
+    const readButton = document.createElement('button');
+    const deleteButton = document.createElement('button');
     newCard.className = 'book-card';
     bookTitle.className = 'book-title';
     bookAuthor.className = 'book-author';
     bookPages.className = 'book-pages';
+    readButton.classList.add('button', 'read-button');
+    deleteButton.classList.add('button', 'delete-button');
+    readButton.textContent = 'Change Read Status'
+    deleteButton.textContent = 'X';
     bookTitle.textContent = `${newBook.title}`;
     bookAuthor.textContent = `${newBook.author}`;
     bookPages.textContent = `${newBook.pages} pages`;
     bookRead.textContent = `Have you read this book? ${newBook.read}`;
+    newCard.appendChild(deleteButton);
     newCard.appendChild(bookTitle);
     newCard.appendChild(bookAuthor);
     newCard.appendChild(bookPages);
     newCard.appendChild(bookRead);
+    newCard.appendChild(readButton);
     bookshelfDiv.appendChild(newCard);
 });
 }
