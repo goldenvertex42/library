@@ -347,3 +347,55 @@ template {
 [hidden] {
   display: none;
 }
+
+/** RESET END **/
+
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+#new-book-dialog {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#new-book-dialog::backdrop {
+    /* Optional: Hide the default modal backdrop for a non-modal experience */
+    background: transparent;
+}
+
+#new-book-dialog h2 {
+    margin-top: 0;
+}
+
+#new-book-dialog form p {
+    margin-bottom: 15px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.bookshelf {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.book-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 200px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
