@@ -29,14 +29,18 @@
                     <input type="number" id="pages" name="pages" required>
                 </div>
 
-                <div class="form-group-checkbox">
-                    <input type="checkbox" id="read" name="read">
-                    <label for="read">Have you read this book?</label>
-                </div>
+                <fieldset class="read-radio" name="bookRead">
+                    <legend>Have you read this book?</legend>
+                    <input type="radio" id="readYes" name="bookRead" value="true" required>
+                    <label for="readYes">Yes</label>
+
+                    <input type="radio" id="readNo" name="bookRead" value="false">
+                    <label for="readNo">No</label>
+                </fieldset>
 
                 <div class="button-group">
-                    <button type="submit">Save</button>
-                    <button type="button" id="cancel-btn">Cancel</button>
+                    <button class="dialog-button" type="submit">Save</button>
+                    <button class="dialog-button" type="button" id="cancel-btn">Cancel</button>
                 </div>
             </form>
         </dialog>
