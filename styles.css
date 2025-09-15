@@ -351,8 +351,13 @@ template {
 /** RESET END **/
 
 body {
-  font-family: Arial, sans-serif;
+  background-color: #F0ECB9;
+  font-family: Roboto, sans-serif;
   padding: 20px;
+}
+
+h1, h2, h3 {
+  color: #1F2B85;
 }
 
 #new-book-dialog {
@@ -367,11 +372,11 @@ body {
   background: transparent;
 }
 
-#new-book-dialog h2 {
+#new-book-dialog h3 {
   margin-top: 0;
 }
 
-#new-book-dialog form p {
+.form-group, .read-radio {
   margin-bottom: 15px;
 }
 
@@ -380,9 +385,28 @@ body {
   gap: 10px;
 }
 
+.dialog-button {
+  border: none;
+  border-radius: 8px;
+  background-color: #96117C;
+  color: white;
+}
+
+.dialog-button:hover {
+  background-color: #9DCBE7;
+}
+
 button {
   padding: 8px 16px;
   cursor: pointer;
+}
+
+.read-button {
+  background-color: #9DCBE7;
+  color: #1F2B85;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8rem;
 }
 
 .header-box {
@@ -392,14 +416,14 @@ button {
 
 #new-book-btn {
   align-self: center;
-  background-color: #80EF80;
+  background-color: #66C7A7;
   border: none;
   border-radius: 8px;
   color: white;
 }
 
 #new-book-btn:hover {
-  background-color: #B4F6B4;
+  background-color: #C76686;
 }
 
 .bookshelf {
