@@ -1,12 +1,33 @@
 let myLibrary = [];
 const bookshelfDiv = document.body.querySelector('.bookshelf');
 
-function generateRandomPastelColor() {
-  const hue = Math.floor(Math.random() * 361); // Random hue (0-360)
-  const saturation = Math.floor(Math.random() * 30) + 70; // Moderate saturation (70-99%)
-  const lightness = Math.floor(Math.random() * 15) + 80; // High lightness (80-94%)
+if (myLibrary.length === 0) {
+    const placeholder = document.createElement('div');
+    placeholder.className = 'placeholder-box';
+    const placeholderText = document.createElement('p');
+    placeholderText.className = 'placeholder-text';
+    placeholderText.textContent = 'There are no books on your shelf';
+    bookshelfDiv.appendChild(placeholder);
+}
+// LAST THING YOU WERE DOING WAS TRYING TO PUT PLACEHOLDER TEXT WHEN myLibrary IS
+const pastelColors = [
+    '#FFD1DC', // Pastel Pink
+    '#ADD8E6', // Light Blue
+    '#90EE90', // Light Green
+    '#FFFACD', // Lemon Chiffon
+    '#E6E6FA', // Lavender
+    '#FFB6C1', // Light Pink
+    '#B0E0E6'  // Powder Blue
+];
 
-  return `hsl(${hue}deg, ${saturation}%, ${lightness}%)`;
+let colorIndex = 0;
+
+function getSelectedRadioValue(groupName) {
+  const selectedRadio = document.querySelector(`input[name="${groupName}"]:checked`);
+  if (selectedRadio) {
+    return selectedRadio.value;
+  }
+  return null; // Or handle the case where no radio button is selected
 }
 
 function Book(title, author, pages, read) {
@@ -38,12 +59,20 @@ function displayBooks() {
         const bookRead = document.createElement('p');
         const readButton = document.createElement('button');
         const deleteButton = document.createElement('button');
-        const readStatusText = newBook.read ? "Yes" : "No";
+
+        let readStatus;
+        if (newBook.read === true) {
+            readStatus = "Yes";
+        } else {
+            readStatus = "No";
+        }
+
         newCard.dataset.bookId = newBook.id;
         newCard.className = 'book-card';
         bookTitle.className = 'book-title';
         bookAuthor.className = 'book-author';
         bookPages.className = 'book-pages';
+        bookRead.className = 'book-read';
         readButton.classList.add('button', 'read-button');
         deleteButton.classList.add('button', 'delete-button');
         readButton.textContent = 'Change Read Status'
@@ -51,25 +80,20 @@ function displayBooks() {
         bookTitle.textContent = `${newBook.title}`;
         bookAuthor.textContent = `${newBook.author}`;
         bookPages.textContent = `${newBook.pages} pages`;
-        bookRead.textContent = `Have you read this book? ${readStatusText}`;
+        bookRead.textContent = `Have you read this book? ${readStatus}`;
+        console.log(newBook.read);
+        console.log(readStatus);
         newCard.appendChild(deleteButton);
         newCard.appendChild(bookTitle);
         newCard.appendChild(bookAuthor);
         newCard.appendChild(bookPages);
         newCard.appendChild(bookRead);
         newCard.appendChild(readButton);
-        newCard.style.backgroundColor = generateRandomPastelColor();
+        newCard.style.backgroundColor = pastelColors[colorIndex];
+        colorIndex = (colorIndex + 1) % pastelColors.length;
         bookshelfDiv.appendChild(newCard);
 });
 }
-
-addBookToLibrary('The Outsider','Stephen King', 576, 'Yes');
-addBookToLibrary("The Witch's Heart", 'Genevieve Gornichec', 370, "No");
-addBookToLibrary('The Outsider','Stephen King', 576, 'Yes');
-addBookToLibrary("The Witch's Heart", 'Genevieve Gornichec', 370, "No");
-addBookToLibrary('The Outsider','Stephen King', 576, 'Yes');
-addBookToLibrary("The Witch's Heart", 'Genevieve Gornichec', 370, "No");
-
 
 document.addEventListener('DOMContentLoaded', () => {
     const newBookBtn = document.getElementById('new-book-btn');
@@ -92,20 +116,12 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault(); // Prevent default dialog form submission
 
         // Get form values.
-        const checkbox = document.getElementById('read'); // Replace 'myCheckbox' with your checkbox's ID
-        let checkedStatus;
-
-        if (checkbox.checked) {
-        checkedStatus = 'Yes';
-        } else {
-        checkedStatus = 'No';
-        }
-
         const title = document.getElementById('title').value;
         const author = document.getElementById('author').value;
         const pages = document.getElementById('pages').value;
-        const read = checkedStatus;
+        const read = getSelectedRadioValue('bookRead');
     
+        console.log(read);
         // Call the function to add the book to the library.
         addBookToLibrary(title, author, pages, read);
 
@@ -135,12 +151,13 @@ function removeBook(bookId) {
     }
 }
 
-function toggleReadStatus(bookId) {
-    const bookToToggle = myLibrary.find(book => book.id === bookId);
-    if (bookToToggle) {
-        bookToToggle.read = !bookToToggle.read;
+
+Book.prototype.toggleReadStatus = function() {
+    if (this.read === true) {
+        this.read = false;
+    } else {
+        this.read = true;
     }
-    displayBooks();
 }
 
 bookshelfDiv.addEventListener('click', (event) => {
@@ -155,6 +172,10 @@ bookshelfDiv.addEventListener('click', (event) => {
   if (event.target.classList.contains('read-button')) {
     const bookCard = event.target.closest('.book-card');
     const bookId = bookCard.dataset.bookId;
-    toggleReadStatus(bookId);
+    const bookToToggle = myLibrary.find(book => book.id === bookId);
+    if (bookToToggle) {
+      bookToToggle.toggleReadStatus();
+      displayBooks();
   }
-});
+
+}});
