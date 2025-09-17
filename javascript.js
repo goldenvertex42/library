@@ -1,15 +1,7 @@
 let myLibrary = [];
+
 const bookshelfDiv = document.body.querySelector('.bookshelf');
 
-if (myLibrary.length === 0) {
-    const placeholder = document.createElement('div');
-    placeholder.className = 'placeholder-box';
-    const placeholderText = document.createElement('p');
-    placeholderText.className = 'placeholder-text';
-    placeholderText.textContent = 'There are no books on your shelf';
-    bookshelfDiv.appendChild(placeholder);
-}
-// LAST THING YOU WERE DOING WAS TRYING TO PUT PLACEHOLDER TEXT WHEN myLibrary IS
 const pastelColors = [
     '#FFD1DC', // Pastel Pink
     '#ADD8E6', // Light Blue
@@ -27,7 +19,7 @@ function getSelectedRadioValue(groupName) {
   if (selectedRadio) {
     return selectedRadio.value;
   }
-  return null; // Or handle the case where no radio button is selected
+  return null;
 }
 
 function Book(title, author, pages, read) {
