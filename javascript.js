@@ -86,6 +86,18 @@ function displayBooks() {
 });
 }
 
+const inputs = document.querySelectorAll('input');
+
+inputs.forEach(input => {
+    input.addEventListener('blur', () => {
+        if (input.validity.valueMissing) {
+            input.setCustomValidity("You haven't put anything here...")
+        } else {
+            input.setCustomValidity("");
+        }
+    });
+})
+
 document.addEventListener('DOMContentLoaded', () => {
     const newBookBtn = document.getElementById('new-book-btn');
     const newBookDialog = document.getElementById('new-book-dialog');
@@ -104,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle form submission (e.g., to process the data)
     newBookForm.addEventListener('submit', (event) => {
+        
         event.preventDefault(); // Prevent default dialog form submission
 
         // Get form values.
@@ -111,8 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const author = document.getElementById('author').value;
         const pages = document.getElementById('pages').value;
         const read = getSelectedRadioValue('bookRead');
-    
-        console.log(read);
+        
         // Call the function to add the book to the library.
         addBookToLibrary(title, author, pages, read);
 
@@ -123,6 +135,9 @@ document.addEventListener('DOMContentLoaded', () => {
         newBookDialog.close();
     });
 });
+
+
+
 
 function removeBook(bookId) {
   // 1. Confirm the user wants to delete the book
@@ -142,7 +157,7 @@ function removeBook(bookId) {
     }
 }
 
-
+// Add toggleReadStatus method to the Book object prototype
 Book.prototype.toggleReadStatus = function() {
     if (this.read === true) {
         this.read = false;
@@ -159,7 +174,7 @@ bookshelfDiv.addEventListener('click', (event) => {
     const bookId = bookCard.dataset.bookId;
     removeBook(bookId);
   }
-
+  // Check if the clicked element has the 'read-button' class
   if (event.target.classList.contains('read-button')) {
     const bookCard = event.target.closest('.book-card');
     const bookId = bookCard.dataset.bookId;
